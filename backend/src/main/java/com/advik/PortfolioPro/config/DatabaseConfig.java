@@ -54,7 +54,7 @@ public class DatabaseConfig {
         }
 
         // 4. Fallback: In-memory H2 database (ensures Cloud deployment like Render never crashes)
-        String h2Url = "jdbc:h2:mem:portfoliopro;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE";
+        String h2Url = "jdbc:h2:mem:portfoliopro;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;NON_KEYWORDS=USER";
         log.warn("================================================================================");
         log.warn("  LOCAL MYSQL NOT DETECTED AND NO EXTERNAL DATABASE URL CONFIGURED.");
         log.warn("  Starting with embedded in-memory H2 database: {}", h2Url);
