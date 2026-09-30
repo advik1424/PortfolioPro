@@ -1,0 +1,10 @@
+{
+  "name": "portfoliopro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PortfolioPro - Stock Portfolio Management & Tracking System",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "npx serve -s frontend/dist -l $PORT"
+  }
+}
