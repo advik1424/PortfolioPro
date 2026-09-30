@@ -37,7 +37,7 @@ public class ExternalMarketDataProvider
             @Value("${twelvedata.api.key}") String apiKey,
             @Value("${twelvedata.base-url}") String baseUrl) {
 
-        this.apiKey = apiKey;
+        this.apiKey = (apiKey == null || apiKey.isBlank() || apiKey.contains("your_twelvedata")) ? "demo" : apiKey.trim();
 
         this.restClient = restClientBuilder
                 .baseUrl(baseUrl)
@@ -281,41 +281,38 @@ public class ExternalMarketDataProvider
 
         try {
 
-            StocksResponse response =
-                    restClient
-                            .get()
-                            .uri(uriBuilder ->
-                                    uriBuilder
-                                            .path("/stocks")
+            StocksResponse response = null;
+            String keyToUse = (apiKey != null && !apiKey.isBlank() && !apiKey.contains("your_twelvedata")) ? apiKey : "demo";
 
-                                            .queryParam(
-                                                    "exchange",
-                                                    "NSE"
-                                            )
+            try {
+                response = restClient
+                        .get()
+                        .uri(uriBuilder ->
+                                uriBuilder
+                                        .path("/stocks")
+                                        .queryParam("exchange", "NSE")
+                                        .queryParam("type", "Common Stock")
+                                        .queryParam("apikey", keyToUse)
+                                        .build()
+                        )
+                        .retrieve()
+                        .body(StocksResponse.class);
+            } catch (Exception ex) {
+                // Resilient fallback: Query public endpoint without key if custom key failed or hit rate limit
+                response = restClient
+                        .get()
+                        .uri(uriBuilder ->
+                                uriBuilder
+                                        .path("/stocks")
+                                        .queryParam("exchange", "NSE")
+                                        .queryParam("type", "Common Stock")
+                                        .build()
+                        )
+                        .retrieve()
+                        .body(StocksResponse.class);
+            }
 
-                                            .queryParam(
-                                                    "type",
-                                                    "Common Stock"
-                                            )
-
-                                            .queryParam(
-                                                    "show_plan",
-                                                    true
-                                            )
-
-                                            .queryParam(
-                                                    "apikey",
-                                                    apiKey
-                                            )
-
-                                            .build()
-                            )
-                            .retrieve()
-                            .body(StocksResponse.class);
-
-            if (response == null ||
-                    response.data() == null) {
-
+            if (response == null || response.data() == null) {
                 throw new RuntimeException(
                         "Unable to fetch stocks from Twelve Data"
                 );
@@ -325,34 +322,19 @@ public class ExternalMarketDataProvider
                     .stream()
                     .map(stock ->
                             new MarketDataProviderService.ExternalStockDto(
-
                                     stock.symbol(),
-
                                     stock.name(),
-
                                     stock.exchange(),
-
                                     stock.country(),
-
                                     stock.type(),
-
-                                    stock.access() != null
-                                            ? stock.access().global()
-                                            : null,
-
-                                    stock.access() != null
-                                            ? stock.access().plan()
-                                            : null,
-
-                                    stock.access() != null
-                                            ? stock.access().planBusiness()
-                                            : null
+                                    null,
+                                    null,
+                                    null
                             )
                     )
                     .toList();
 
         } catch (RestClientResponseException exception) {
-
             throw new RuntimeException(
                     "Unable to fetch stock list from Twelve Data: "
                             + extractProviderMessage(exception)

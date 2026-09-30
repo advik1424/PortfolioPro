@@ -20,8 +20,8 @@ export default function Stocks() {
   const [tradeStock, setTradeStock] = useState(null);
   const [isTradeOpen, setIsTradeOpen] = useState(false);
 
-  // Load stocks page
-  const loadStocks = useCallback(async () => {
+  // Load stocks page with auto-retry during background startup sync
+  const loadStocks = useCallback(async (isRetry = false) => {
     setLoading(true);
     setError("");
     try {
@@ -31,6 +31,13 @@ export default function Stocks() {
 
       const pageData = res.data || { content: [], totalPages: 0, totalElements: 0 };
       setData(pageData);
+
+      // If backend auto-sync is still synchronizing in the background, retry once after 3 seconds
+      if (pageData.totalElements === 0 && !query && !isRetry) {
+        setTimeout(() => {
+          loadStocks(true);
+        }, 3000);
+      }
 
       // Lazily fetch live quotes for visible stocks
       const visible = pageData.content || [];
