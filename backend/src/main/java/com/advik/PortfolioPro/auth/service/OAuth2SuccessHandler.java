@@ -82,9 +82,18 @@ public class OAuth2SuccessHandler
                 );
 
         // REDIRECT TO REACT
+        String baseFrontend = System.getenv("FRONTEND_URL");
+        if (baseFrontend == null || baseFrontend.isBlank()) {
+            baseFrontend = System.getenv("APP_FRONTEND_URL");
+        }
+        if (baseFrontend == null || baseFrontend.isBlank()) {
+            baseFrontend = "http://localhost:5173";
+        }
+        if (baseFrontend.endsWith("/")) {
+            baseFrontend = baseFrontend.substring(0, baseFrontend.length() - 1);
+        }
 
-        String frontendUrl =
-                "http://localhost:5174/oauth2/callback";
+        String frontendUrl = baseFrontend + "/oauth2/callback";
 
         String redirectUrl =
                 frontendUrl

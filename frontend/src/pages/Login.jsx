@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authApi } from "../api";
+import { authApi, API_BASE_URL } from "../api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Login() {
       </form>
 
       <div className="auth-divider"><span>or</span></div>
-      <a className="google-login" href="http://localhost:8080/oauth2/authorization/google">
+      <a className="google-login" href={`${API_BASE_URL}/oauth2/authorization/google`}>
         Continue with Google
       </a>
 
