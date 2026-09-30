@@ -36,7 +36,9 @@ api.interceptors.response.use(
 // -------------------------------------------------------------
 export const authApi = {
   login: (payload) => api.post("/api/auth/login", payload),
-  register: (payload) => api.post("/api/users", payload)
+  register: (payload) => api.post("/api/users", payload),
+  forgotPassword: (payload) => api.post("/api/auth/forgot-password", payload),
+  resetPassword: (payload) => api.post("/api/auth/reset-password", payload)
 };
 
 // -------------------------------------------------------------
@@ -48,7 +50,8 @@ export const stockApi = {
   search: (query, page = 0, size = 25) =>
     api.get("/api/stocks/search", { params: { query, page, size } }),
   bySymbol: (symbol) =>
-    api.get(`/api/stocks/${encodeURIComponent(symbol)}`)
+    api.get(`/api/stocks/${encodeURIComponent(symbol)}`),
+  sync: () => api.post("/api/stocks/sync")
 };
 
 // -------------------------------------------------------------

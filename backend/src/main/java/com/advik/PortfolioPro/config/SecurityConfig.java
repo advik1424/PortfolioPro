@@ -94,7 +94,7 @@ public class SecurityConfig {
             throws Exception {
 
         http
-                .securityMatcher("/api/**")
+                .securityMatcher("/api/**", "/", "/health")
 
                 .cors(Customizer.withDefaults())
 
@@ -110,6 +110,14 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth ->
                         auth
+
+                                // Root & Health check
+                                .requestMatchers(
+                                        "/",
+                                        "/health",
+                                        "/api/health"
+                                )
+                                .permitAll()
 
                                 // Registration
                                 .requestMatchers(

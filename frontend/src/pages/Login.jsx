@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { authApi, API_BASE_URL } from "../api";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const resetSuccess = location.state?.resetSuccess;
+  const registered = location.state?.registered;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -26,11 +30,70 @@ export default function Login() {
 
   return (
     <AuthShell title="Sign in" subtitle="Access your PortfolioPro account">
+      {resetSuccess && (
+        <div
+          style={{
+            padding: "10px 14px",
+            backgroundColor: "rgba(16, 185, 129, 0.12)",
+            border: "1px solid var(--profit)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--profit)",
+            fontSize: "12px",
+            marginBottom: "16px"
+          }}
+        >
+          Password updated successfully! Please sign in with your new password.
+        </div>
+      )}
+
+      {registered && (
+        <div
+          style={{
+            padding: "10px 14px",
+            backgroundColor: "rgba(16, 185, 129, 0.12)",
+            border: "1px solid var(--profit)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--profit)",
+            fontSize: "12px",
+            marginBottom: "16px"
+          }}
+        >
+          Account created successfully! Please sign in below.
+        </div>
+      )}
+
       <form className="auth-form" onSubmit={submit}>
-        <label>Email<input type="email" value={form.email} onChange={e => setForm({...form,email:e.target.value})} required /></label>
-        <label>Password<input type="password" value={form.password} onChange={e => setForm({...form,password:e.target.value})} required /></label>
+        <label>
+          Email
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+            disabled={busy}
+          />
+        </label>
+
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-secondary)" }}>Password</span>
+            <Link to="/forgot-password" style={{ fontSize: "11px", color: "var(--accent)", textDecoration: "none" }}>
+              Forgot password?
+            </Link>
+          </div>
+          <input
+            type="password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+            disabled={busy}
+          />
+        </div>
+
         {error && <div className="form-error">{error}</div>}
-        <button className="primary full" disabled={busy}>{busy ? "Signing in..." : "Sign in"}</button>
+        <button className="primary full" disabled={busy} style={{ marginTop: "12px" }}>
+          {busy ? "Signing in..." : "Sign in"}
+        </button>
       </form>
 
       <div className="auth-divider"><span>or</span></div>

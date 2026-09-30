@@ -13,6 +13,8 @@ export default function Stocks() {
   const [sort, setSort] = useState({ key: "symbol", dir: "asc" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [syncing, setSyncing] = useState(false);
+  const [syncMsg, setSyncMsg] = useState("");
 
   // Trade Modal State
   const [tradeStock, setTradeStock] = useState(null);
@@ -55,6 +57,25 @@ export default function Stocks() {
   useEffect(() => {
     loadStocks();
   }, [loadStocks]);
+
+  const handleSyncStocks = async () => {
+    setSyncing(true);
+    setSyncMsg("");
+    setError("");
+    try {
+      const res = await stockApi.sync();
+      const count = res.data?.stocksAdded ?? 0;
+      setSyncMsg(res.data?.message || `Successfully synced ${count} equities from Twelve Data!`);
+      await loadStocks();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        "Stock synchronization failed. Please check Twelve Data API configuration on Render."
+      );
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -141,17 +162,57 @@ export default function Stocks() {
           </button>
         </form>
 
-        {query && (
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {query && (
+            <button
+              type="button"
+              className="secondary"
+              onClick={handleClearSearch}
+              style={{ fontSize: "11px", height: "36px" }}
+            >
+              ✕ Clear search ("{query}")
+            </button>
+          )}
+
           <button
             type="button"
-            className="secondary"
-            onClick={handleClearSearch}
-            style={{ fontSize: "11px", height: "36px" }}
+            className="primary"
+            onClick={handleSyncStocks}
+            disabled={syncing || loading}
+            style={{
+              height: "36px",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: syncing ? "var(--bg-tertiary)" : "linear-gradient(135deg, #2563eb, #1d4ed8)",
+              cursor: syncing ? "not-allowed" : "pointer"
+            }}
           >
-            ✕ Clear search ("{query}")
+            {syncing ? "⚡ Syncing from Twelve Data..." : "⚡ Sync Live Stocks (NSE)"}
           </button>
-        )}
+        </div>
       </div>
+
+      {syncMsg && (
+        <div
+          style={{
+            padding: "10px 14px",
+            backgroundColor: "rgba(16, 185, 129, 0.12)",
+            border: "1px solid var(--profit)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--profit)",
+            fontSize: "12px",
+            marginBottom: "16px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
+          }}
+        >
+          <span>✓</span>
+          <span>{syncMsg}</span>
+        </div>
+      )}
 
       {error && (
         <div className="form-error" style={{ marginBottom: "16px" }}>
@@ -231,13 +292,38 @@ export default function Stocks() {
               ) : sortedRows.length === 0 ? (
                 <tr>
                   <td colSpan="8">
-                    <div className="empty-box">
-                      <strong>No Stocks Found</strong>
-                      <p>No equities matched your query "{query}".</p>
-                      {query && (
-                        <button className="secondary" onClick={handleClearSearch}>
-                          Clear Filter
-                        </button>
+                    <div className="empty-box" style={{ padding: "36px 16px", textAlign: "center" }}>
+                      {query ? (
+                        <>
+                          <strong>No Stocks Found</strong>
+                          <p>No equities matched your query "{query}".</p>
+                          <button className="secondary" onClick={handleClearSearch} style={{ marginTop: "10px" }}>
+                            Clear Filter
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ fontSize: "28px", marginBottom: "8px" }}>📊</div>
+                          <strong>0 Stocks in Synchronized Universe</strong>
+                          <p style={{ maxWidth: "480px", margin: "6px auto 0", color: "var(--text-secondary)" }}>
+                            The database currently has zero stocks. Click below to dynamically synchronize live NSE equities directly from Twelve Data API.
+                          </p>
+                          <button
+                            className="primary"
+                            onClick={handleSyncStocks}
+                            disabled={syncing}
+                            style={{
+                              marginTop: "14px",
+                              padding: "10px 22px",
+                              fontSize: "13px",
+                              fontWeight: "600",
+                              background: syncing ? "var(--bg-tertiary)" : "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                              cursor: syncing ? "not-allowed" : "pointer"
+                            }}
+                          >
+                            {syncing ? "⚡ Syncing Live Stocks from Twelve Data..." : "⚡ Sync Stocks from Twelve Data (NSE)"}
+                          </button>
+                        </>
                       )}
                     </div>
                   </td>
