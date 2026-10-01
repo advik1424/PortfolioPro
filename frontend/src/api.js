@@ -144,3 +144,14 @@ export const formatPercent = (value) => {
   const sign = num > 0 ? "+" : "";
   return `${sign}${num.toFixed(2)}%`;
 };
+
+export const formatCr = (value) => {
+  if (value === null || value === undefined || value === "" || isNaN(value)) {
+    return "—";
+  }
+  const num = Number(value);
+  if (num >= 10000000) {
+    return `₹ ${(num / 10000000).toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+  }
+  return `₹ ${num.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+};
