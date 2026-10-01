@@ -4,7 +4,7 @@ import { stockApi } from "../api";
 
 const navItems = [
   { label: "Dashboard", path: "/dashboard" },
-  { label: "Stocks", path: "/stocks" },
+  { label: "Screens", path: "/stocks" },
   { label: "Watchlists", path: "/watchlists" },
   { label: "Portfolio", path: "/portfolio" },
   { label: "Transactions", path: "/transactions" },
@@ -79,12 +79,12 @@ export default function Layout() {
 
   return (
     <div className="site">
-      {/* Top Header Navigation */}
-      <header className="top-nav">
+      {/* Top Header Navigation (Screener.in & Groww Style) */}
+      <header className="top-nav" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="nav-left">
-          <div className="logo" onClick={() => navigate("/dashboard")} title="PortfolioPro Dashboard">
-            <span className="logo-box">P</span>
-            <span>PortfolioPro</span>
+          <div className="logo" onClick={() => navigate("/dashboard")} title="WealthEdge - Financial Intelligence">
+            <span className="logo-box">W</span>
+            <span style={{ fontWeight: 800, letterSpacing: "-0.03em" }}>WealthEdge</span>
           </div>
           <nav className="main-nav">
             {navItems.map(({ label, path }) => (
@@ -103,14 +103,15 @@ export default function Layout() {
           <button
             className="nav-search"
             onClick={() => setSearchOpen(true)}
-            aria-label="Search stocks"
+            aria-label="Search companies"
             type="button"
+            style={{ borderRadius: "var(--radius-sm)", borderColor: "#e2e8f0", backgroundColor: "#f8fafc" }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <span>Search stocks...</span>
+            <span>Search for a company...</span>
             <kbd>Ctrl K</kbd>
           </button>
           <div className="avatar" title={user?.name || user?.email || "User Profile"}>
@@ -128,9 +129,9 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <span>PortfolioPro © 2026</span>
-        <span>Stock Portfolio Management & Market Tracking System</span>
+      <footer className="footer" style={{ borderTop: "1px solid #e2e8f0", backgroundColor: "#ffffff", padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "12px", color: "var(--text-muted)" }}>
+        <span><strong>WealthEdge</strong> © 2026</span>
+        <span>Stock Screener and Fundamental Financial Intelligence for Indian Equities</span>
       </footer>
 
       {/* Mobile Bottom Navigation Bar (< 680px) */}
@@ -150,7 +151,7 @@ export default function Layout() {
       {searchOpen && (
         <div className="modal-overlay" onClick={() => setSearchOpen(false)}>
           <div className="modal-card" style={{ width: "520px" }} onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header" style={{ borderBottom: "none", paddingBottom: "8px" }}>
+            <div className="modal-header" style={{ borderBottom: "none", paddingBottom: "8px", backgroundColor: "#ffffff" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -160,7 +161,7 @@ export default function Layout() {
                   ref={searchInputRef}
                   className="form-input"
                   style={{ border: "none", boxShadow: "none", fontSize: "14px", padding: "4px 0" }}
-                  placeholder="Type company name or symbol (e.g. RELIANCE, TCS)..."
+                  placeholder="Search for a company (e.g. RELIANCE, TCS, INFY)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -173,7 +174,7 @@ export default function Layout() {
             <div style={{ maxHeight: "340px", overflowY: "auto", borderTop: "1px solid var(--border)" }}>
               {searching ? (
                 <div style={{ padding: "20px", textAlign: "center", color: "var(--text-muted)", fontSize: "12px" }}>
-                  Searching stock database...
+                  Searching WealthEdge universe...
                 </div>
               ) : searchResults.length > 0 ? (
                 <div>
@@ -205,25 +206,25 @@ export default function Layout() {
                         </div>
                       </div>
                       <span style={{ fontSize: "11px", color: "var(--accent)", fontWeight: "600" }}>
-                        View →
+                        View Screener →
                       </span>
                     </div>
                   ))}
                 </div>
               ) : searchQuery.trim() ? (
                 <div style={{ padding: "24px", textAlign: "center", color: "var(--text-muted)", fontSize: "12px" }}>
-                  No stocks found matching "<strong>{searchQuery}</strong>"
+                  No companies found matching "<strong>{searchQuery}</strong>"
                 </div>
               ) : (
                 <div style={{ padding: "24px", textAlign: "center", color: "var(--text-muted)", fontSize: "11px" }}>
-                  Search stocks by ticker symbol or company name
+                  Search any company by ticker symbol or full company name
                 </div>
               )}
             </div>
 
             <div style={{ padding: "8px 16px", background: "var(--bg-subtle)", borderTop: "1px solid var(--border)", fontSize: "10px", color: "var(--text-muted)", display: "flex", justifyContent: "space-between" }}>
               <span>Press <kbd style={{ background: "#fff", padding: "1px 4px", border: "1px solid var(--border)", borderRadius: "3px" }}>Esc</kbd> to close</span>
-              <span>Backend-synced stock universe</span>
+              <span>WealthEdge Live NSE Equities</span>
             </div>
           </div>
         </div>

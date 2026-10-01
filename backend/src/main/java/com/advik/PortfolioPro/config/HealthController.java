@@ -13,7 +13,7 @@ public class HealthController {
     public ResponseEntity<Map<String, Object>> health() {
         return ResponseEntity.ok(Map.of(
                 "status", "UP",
-                "service", "PortfolioPro Backend API",
+                "service", "WealthEdge Backend API",
                 "version", "2.0.0",
                 "timestamp", System.currentTimeMillis(),
                 "frontend", "https://clinquant-tartufo-34ba0c.netlify.app"

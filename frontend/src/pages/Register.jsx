@@ -42,12 +42,12 @@ export default function Register() {
       <div className="auth-card register-card">
         {/* Brand Logo */}
         <div className="auth-logo">
-          <span className="logo-box">P</span>
-          <span>PortfolioPro</span>
+          <span className="logo-box">W</span>
+          <span>WealthEdge</span>
         </div>
 
         <h1>Create Account</h1>
-        <p>Professional Stock Portfolio Management &amp; Tracking System.</p>
+        <p>Institutional Stock Screener &amp; Financial Intelligence.</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <label>

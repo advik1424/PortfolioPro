@@ -330,7 +330,7 @@ export default function StockDetail() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "16px" }}>
           <div>
             <div className="breadcrumb" style={{ marginBottom: "6px", fontSize: "11px", letterSpacing: "0.5px" }}>
-              <Link to="/stocks" style={{ textDecoration: "none", color: "var(--accent)" }}>EQUITIES</Link> / <span>{stock.symbol}</span>
+              <Link to="/stocks" style={{ textDecoration: "none", color: "var(--accent)" }}>WEALTHEDGE</Link> / <span>{stock.symbol}</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
               <h1 style={{ fontSize: "26px", fontWeight: 800, margin: 0, color: "var(--text-primary)" }}>
@@ -381,7 +381,7 @@ export default function StockDetail() {
                 padding: "0 22px",
                 fontSize: "13px",
                 fontWeight: 700,
-                background: "linear-gradient(135deg, #2563eb, #1d4ed8)"
+                background: "linear-gradient(135deg, #00d09c, #00b386)"
               }}
             >
               + Trade / Buy
@@ -640,8 +640,8 @@ export default function StockDetail() {
               <svg viewBox="0 0 800 240" style={{ width: "100%", height: "240px", overflow: "visible" }}>
                 <defs>
                   <linearGradient id="chartGradientScreener" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2563eb" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#2563eb" stopOpacity="0.0" />
+                    <stop offset="0%" stopColor="#00d09c" stopOpacity="0.25" />
+                    <stop offset="100%" stopColor="#00d09c" stopOpacity="0.0" />
                   </linearGradient>
                 </defs>
                 {/* Horizontal Grid */}

@@ -196,7 +196,7 @@ export default function Stocks() {
       <div className="page-heading" style={{ marginBottom: "16px" }}>
         <div>
           <div className="breadcrumb" style={{ letterSpacing: "0.5px", fontSize: "11px" }}>
-            SCREENER.IN / EQUITY RESEARCH
+            WEALTHEDGE / SCREENER.IN RESEARCH
           </div>
           <h1 style={{ fontSize: "24px", fontWeight: 800, margin: "4px 0" }}>Stock Screener</h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "13px" }}>
@@ -234,9 +234,10 @@ export default function Stocks() {
               borderRadius: "20px",
               fontSize: "12px",
               fontWeight: activePreset === p.id ? 700 : 500,
-              backgroundColor: activePreset === p.id ? "var(--text-primary)" : "#ffffff",
+              backgroundColor: activePreset === p.id ? "var(--accent)" : "#ffffff",
               color: activePreset === p.id ? "#ffffff" : "var(--text-secondary)",
-              border: activePreset === p.id ? "1px solid var(--text-primary)" : "1px solid var(--border)",
+              border: activePreset === p.id ? "1px solid var(--accent)" : "1px solid var(--border)",
+              boxShadow: activePreset === p.id ? "0 2px 6px rgba(0, 208, 156, 0.3)" : "none",
               cursor: "pointer",
               whiteSpace: "nowrap",
               transition: "all 0.15s ease"

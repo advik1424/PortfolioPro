@@ -36,7 +36,7 @@ export default function Dashboard() {
           setRecentTrades((tradesRes.value.data || []).slice(0, 5));
         }
       } catch (err) {
-        setError("Unable to connect to PortfolioPro backend.");
+        setError("Unable to connect to WealthEdge backend.");
       } finally {
         setLoading(false);
       }
@@ -61,7 +61,7 @@ export default function Dashboard() {
           <p>Real-time overview of your stock holdings, valuation, and transaction history.</p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Link to="/stocks" className="secondary">Explore Stocks</Link>
+          <Link to="/stocks" className="secondary">Explore Screener</Link>
           <Link to="/portfolio" className="primary">View Portfolio</Link>
         </div>
       </div>

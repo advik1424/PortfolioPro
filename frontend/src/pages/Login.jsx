@@ -29,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <AuthShell title="Sign in" subtitle="Access your PortfolioPro account">
+    <AuthShell title="Sign in" subtitle="Access your WealthEdge financial account">
       {resetSuccess && (
         <div
           style={{
@@ -101,7 +101,7 @@ export default function Login() {
         Continue with Google
       </a>
 
-      <p className="auth-bottom">New to PortfolioPro? <Link to="/register">Create an account</Link></p>
+      <p className="auth-bottom">New to WealthEdge? <Link to="/register">Create an account</Link></p>
     </AuthShell>
   );
 }
@@ -109,7 +109,7 @@ export default function Login() {
 function AuthShell({title,subtitle,children}) {
   return <div className="auth-page">
     <div className="auth-card">
-      <div className="auth-logo"><span className="logo-box">P</span><span>PortfolioPro</span></div>
+      <div className="auth-logo"><span className="logo-box">W</span><span>WealthEdge</span></div>
       <h1>{title}</h1>
       <p>{subtitle}</p>
       {children}

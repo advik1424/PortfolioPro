@@ -11,17 +11,17 @@
   --border: #e2e8f0;        /* Slate 200 */
   --border-subtle: #f1f5f9; /* Slate 100 */
 
-  /* Modern Primary Accent (Fintech Electric Blue) */
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-light: #eff6ff;
-  --accent-border: #bfdbfe;
+  /* Modern Primary Accent (Groww Green & Pure White Fintech Palette) */
+  --accent: #00d09c;
+  --accent-hover: #00b386;
+  --accent-light: #e6fbf5;
+  --accent-border: #a7f3d0;
 
   /* Semantic Financial Colors */
-  --profit: #16a34a;
-  --profit-bg: #f0fdf4;
-  --profit-border: #bbf7d0;
-  --loss: #dc2626;
+  --profit: #00a87e;
+  --profit-bg: #e6fbf5;
+  --profit-border: #a7f3d0;
+  --loss: #eb5b5b;
   --loss-bg: #fef2f2;
   --loss-border: #fecaca;
 
@@ -189,13 +189,13 @@ a {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #00d09c 0%, #00b386 100%);
   color: #ffffff;
   display: grid;
   place-items: center;
   font-weight: 800;
   font-size: 15px;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 208, 156, 0.3);
 }
 
 .main-nav {
@@ -536,15 +536,15 @@ a {
 }
 
 .primary {
-  border: 1px solid #1d4ed8;
-  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  border: 1px solid #00b386;
+  background: #00d09c;
   color: #ffffff;
-  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 208, 156, 0.25);
 }
 
 .primary:hover:not(:disabled) {
-  background: #1d4ed8;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.35);
+  background: #00b386;
+  box-shadow: 0 4px 8px -1px rgba(0, 208, 156, 0.35);
   transform: translateY(-1px);
 }
 

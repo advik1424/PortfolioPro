@@ -46,8 +46,8 @@ export default function OAuthCallback() {
       <div className="auth-page">
         <div className="auth-card" style={{ textAlign: "center" }}>
           <div className="auth-logo">
-            <span className="logo-box">P</span>
-            <span>PortfolioPro</span>
+            <span className="logo-box">W</span>
+            <span>WealthEdge</span>
           </div>
           <h2 style={{ fontSize: "18px", color: "var(--loss)", margin: "0 0 8px" }}>
             Authentication Failed
@@ -71,14 +71,14 @@ export default function OAuthCallback() {
     <div className="auth-page">
       <div className="auth-card" style={{ textAlign: "center", padding: "40px 24px" }}>
         <div className="auth-logo">
-          <span className="logo-box">P</span>
-          <span>PortfolioPro</span>
+          <span className="logo-box">W</span>
+          <span>WealthEdge</span>
         </div>
         <div style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-primary)", marginBottom: "6px" }}>
           Completing Google sign in...
         </div>
         <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-          Please wait while we set up your portfolio session.
+          Please wait while we set up your WealthEdge session.
         </div>
       </div>
     </div>

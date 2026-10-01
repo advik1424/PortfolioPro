@@ -82,8 +82,8 @@ export default function ForgotPassword() {
       <div className="auth-card">
         {/* Brand Logo */}
         <div className="auth-logo">
-          <span className="logo-box">P</span>
-          <span>PortfolioPro</span>
+          <span className="logo-box">W</span>
+          <span>WealthEdge</span>
         </div>
 
         <h1>Reset Password</h1>
