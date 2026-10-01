@@ -247,7 +247,7 @@ export default function Dashboard() {
 
       {/* Quick Navigation Footer Banner */}
       <div style={{ marginTop: "24px" }} className="card info-card">
-        <strong>PortfolioPro Intelligence:</strong>
+        <strong>WealthEdge Intelligence:</strong>
         <span>
           Stocks are stored in MySQL with market valuations synced from Twelve Data. Use Watchlists to monitor potential opportunities.
         </span>

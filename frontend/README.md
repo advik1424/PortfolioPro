@@ -1,24 +1,24 @@
-PortfolioPro frontend v2
+# WealthEdge Frontend
 
-Run:
-1. npm install
-2. npm run dev
+Modern stock screener and financial intelligence platform for Indian equities inspired by Screener.in with Groww Green design language.
 
-Vite uses:
-127.0.0.1 with port 5173, but strictPort=false so another port is used if 5173 is busy.
+## Quick Start
+1. `npm install`
+2. `npm run dev`
 
-Backend:
-http://localhost:8080
+### Development Server:
+- `http://localhost:5173`
+- Host: `127.0.0.1`
 
-Routes:
- /login
- /register
- /dashboard
- /stocks
- /stocks/:symbol
- /portfolio
- /watchlists
- /analysis
+### Backend API:
+- `http://localhost:8080` (Spring Boot API)
 
-The UI is Screener-inspired rather than a pixel-perfect/proprietary clone.
-It uses your existing Spring Boot APIs and does not fabricate market values.
+### Application Routes:
+- `/dashboard` — Market Overview, Sector Indices & Watchlists
+- `/stocks` — Screener.in style Equity Screens & Multi-filter Stock Discovery
+- `/stocks/:symbol` — Deep Screener Analysis (Key Ratios, Interactive DMA Chart, Pros & Cons, Peers, Quarterly Results, P&L, Balance Sheet, Cash Flows, Shareholding)
+- `/portfolio` — Holdings Ledger, Weighted Average Buy Price & Realized/Unrealized P&L
+- `/watchlists` — Real-time Stock Tracking Lists
+- `/transactions` — Immutable Trade Audit Trail
+- `/analysis` — Technical & Fundamental Research Workbench
+- `/login` / `/register` / `/forgot-password` — Secure Authentication & Google OAuth2

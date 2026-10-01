@@ -1,60 +1,74 @@
-# PortfolioPro — Stock Portfolio Management & Tracking System
+# WealthEdge — Stock Screener & Portfolio Financial Intelligence System
 
-PortfolioPro is an enterprise-grade stock portfolio management, valuation, and market tracking platform. Inspired by the clean, data-first philosophy of **Screener.in**, it offers real-time portfolio valuation, weighted average acquisition pricing, realized/unrealized profit & loss calculations, immutable transaction ledgers, watchlist monitoring, technical indicators, and fundamental financial analysis.
+**WealthEdge** is an enterprise-grade stock screener, valuation, and market tracking platform for Indian equities. Built with the clean, data-first philosophy of **Screener.in** and styled in an intuitive **Groww Green (`#00D09C`) & White** interface, WealthEdge provides real-time portfolio valuation, weighted average acquisition pricing, realized/unrealized profit & loss calculations, immutable transaction ledgers, watchlist monitoring, technical indicators, and fundamental financial analysis.
 
 ---
 
 ## 🏗️ Architecture & Tech Stack
 
 ```
-PortfolioPro/
-├── backend/          # Spring Boot 3, Java 21, Spring Security, JWT, JPA/Hibernate, MySQL
-├── frontend/         # React 19, Vite, React Router v7, Axios, Screener-style CSS Design System
+WealthEdge/
+├── backend/          # Spring Boot 3, Java 21, Spring Security, JWT, JPA/Hibernate, Twelve Data API
+├── frontend/         # React 19, Vite, React Router v7, Screener.in Layout & Groww Green CSS
 ├── .gitignore        # Unified Git ignore rules
+├── Dockerfile        # Production multi-stage Docker build
+├── netlify.toml      # Frontend SPA routing configuration
 └── README.md         # Project documentation
 ```
 
 ### Backend:
 - **Language & Runtime**: Java 21 LTS
-- **Framework**: Spring Boot 3.x
+- **Framework**: Spring Boot 3.x / 4.x
 - **Security**: Spring Security 6 with Stateless JWT Bearer Authentication & Google OAuth2 Client
 - **Persistence**: Spring Data JPA with Hibernate ORM
-- **Database**: MySQL 8.x
+- **Database**: PostgreSQL (Render Cloud), MySQL 8.x (Local Workbench), In-Memory H2 (Fallback)
 - **Market Data Integration**: Twelve Data REST API (Real-time stock quotes, historical candles, technical indicators)
-- **Mathematical Accuracy**: High-precision `BigDecimal` arithmetic for weighted average cost basis and P&L
+- **Mathematical Accuracy**: High-precision `BigDecimal` arithmetic for weighted average cost basis and P&L calculations
 
 ### Frontend:
 - **Library**: React 19.x with functional hooks
 - **Bundler & Tooling**: Vite 7.x
 - **Routing**: React Router v7 with protected route wrappers
-- **Styling**: Screener.in-inspired bespoke financial design system (`styles.css`)
+- **Styling**: Screener.in bespoke financial design system with Groww Green (`#00D09C`) & Pure White palette (`styles.css`)
 - **Key Features**:
   - Global `Ctrl + K` debounced stock search modal
-  - Responsive SVG price charts (Zero external charting library overhead)
+  - Responsive SVG price charts with 50-DMA golden overlay (Zero external charting library overhead)
   - Right-aligned monospace tabular numerical values (`font-variant-numeric: tabular-nums`)
   - Semantic profit/loss badge indicators
   - Dual-mode order execution modal (`BUY` and `SELL` with holding validation)
+  - Dynamic Pros & Cons automated financial health evaluator
+  - Peer comparison benchmarking table across sectors
+  - 8-quarter Quarterly Results, Multi-year P&L, Balance Sheet, Cash Flow, and Shareholding breakdown tables
 
 ---
 
 ## 🌟 Key Features
 
-1. **Authoritative Financial Valuation**:
-   - Backend-driven calculations: Total Invested, Portfolio Value, Unrealized P&L, Realized P&L.
+1. **Exact Screener.in Financial Interface**:
+   - 9-Key Ratios summary bar: Market Cap, CMP, 52W High/Low, Stock P/E, Book Value, Dividend Yield %, ROCE %, ROE %, Face Value.
+   - Sub-navigation anchor bar jumping directly to Chart, Analysis, Peers, Quarterly Results, Profit & Loss, Balance Sheet, Cash Flow, and Shareholding.
+   - 4 Compounded Growth metrics boxes: Sales Growth, Profit Growth, Stock Price CAGR, Return on Equity (ROE).
+
+2. **Authoritative Financial Valuation**:
+   - Backend-driven calculations: Total Invested, Current Valuation, Unrealized P&L, Realized P&L.
    - Weighted average buy price recalculated automatically upon multiple BUY transactions.
    - Realized P/L calculated and recorded when shares are partially or fully sold.
-2. **Order Execution & Trading Modal**:
+
+3. **Order Execution & Trading Modal**:
    - Buy and Sell transactions recorded directly from Stock Detail, Watchlists, or Portfolio.
    - Pre-validation ensures users cannot sell more shares than their active holding quantity.
    - Real-time estimated order value calculation (`Qty × Price`) and CMP shortcut.
-3. **Immutable Transaction History Ledger**:
+
+4. **Immutable Transaction History Ledger**:
    - Complete audit trail of all executed trades (`/transactions`).
    - Filter by `ALL`, `BUY`, or `SELL` with live search by stock symbol.
-4. **Interactive Watchlist Workspace**:
+
+5. **Interactive Watchlist Workspace**:
    - Multi-watchlist support with instant tab switching.
    - Real-time stock monitor table with CMP and day change percentage.
    - Search & add stocks modal and stock removal.
-5. **Deep Stock Research & Screener Table**:
+
+6. **Deep Stock Research & Screener Table**:
    - Search across synchronized stock universe with sorting by Symbol, Company, Exchange, Sector, or Price.
    - Stock detail page featuring live price spread, high/low range, valuation metrics, and technical indicators (SMA, EMA, RSI with status badges, MACD, Support, Resistance).
    - Historical close price movements rendered via responsive SVG line & area charts.
@@ -66,20 +80,21 @@ PortfolioPro/
 ### Prerequisites:
 - **JDK 21** or later
 - **Node.js 18+** & npm
-- **MySQL Server 8.0+**
+- **MySQL Server 8.0+** (or Render PostgreSQL)
 
 ### 1. Database Setup:
-Create the database in MySQL:
+Create the database in MySQL (optional if using Render cloud PostgreSQL or H2):
 ```sql
-CREATE DATABASE portfoliopro;
+CREATE DATABASE wealthedge;
 ```
 
 ### 2. Backend Setup & Run:
-Configure your database credentials in `backend/src/main/resources/application.properties`:
+Configure your credentials in `backend/src/main/resources/application.properties` or set environment variables:
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/portfoliopro
+spring.datasource.url=jdbc:mysql://localhost:3306/wealthedge?createDatabaseIfNotExist=true
 spring.datasource.username=root
 spring.datasource.password=YOUR_PASSWORD
+twelvedata.api.key=YOUR_TWELVE_DATA_API_KEY
 ```
 
 Run the Spring Boot application:
