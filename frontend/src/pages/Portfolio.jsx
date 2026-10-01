@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { portfolioApi, tradingApi, formatINR, formatNumber, formatPercent } from "../api";
 import TransactionModal from "../components/TransactionModal";
+
+const ALLOCATION_COLORS = [
+  "#00d09c",
+  "#3b82f6",
+  "#8b5cf6",
+  "#f59e0b",
+  "#ec4899",
+  "#14b8a6",
+  "#6366f1",
+  "#f97316"
+];
 
 export default function Portfolio() {
   const [summary, setSummary] = useState(null);
@@ -11,6 +22,11 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
+
+  // Search and Sort State for Holdings
+  const [holdingSearch, setHoldingSearch] = useState("");
+  const [holdingSort, setHoldingSort] = useState("value"); // 'value' | 'pnl' | 'symbol' | 'qty'
+  const [hoveredHolding, setHoveredHolding] = useState(null);
 
   // Trade Modal State for Buy More / Sell from holdings
   const [tradeStock, setTradeStock] = useState(null);
@@ -60,6 +76,53 @@ export default function Portfolio() {
   const realizedPnL = Number(summary?.totalRealizedPnL || 0);
   const isUnrealizedPositive = unrealizedPnL >= 0;
   const isRealizedPositive = realizedPnL >= 0;
+
+  const totalValue = Number(summary?.totalCurrentValue || 0);
+
+  // Asset allocation percentages
+  const allocation = useMemo(() => {
+    if (!totalValue || holdings.length === 0) return [];
+    return holdings.map((h, i) => {
+      const val = Number(h.currentValue || 0);
+      const pct = Math.max(1, (val / totalValue) * 100);
+      return {
+        ...h,
+        weight: pct,
+        color: ALLOCATION_COLORS[i % ALLOCATION_COLORS.length]
+      };
+    });
+  }, [holdings, totalValue]);
+
+  // Filtered and Sorted Holdings
+  const filteredHoldings = useMemo(() => {
+    let list = [...holdings];
+    if (holdingSearch.trim()) {
+      const q = holdingSearch.toLowerCase().trim();
+      list = list.filter(
+        (h) =>
+          (h.symbol && h.symbol.toLowerCase().includes(q)) ||
+          (h.companyName && h.companyName.toLowerCase().includes(q))
+      );
+    }
+
+    list.sort((a, b) => {
+      if (holdingSort === "value") {
+        return Number(b.currentValue || 0) - Number(a.currentValue || 0);
+      }
+      if (holdingSort === "pnl") {
+        return Number(b.unrealizedPnL || 0) - Number(a.unrealizedPnL || 0);
+      }
+      if (holdingSort === "qty") {
+        return Number(b.quantity || 0) - Number(a.quantity || 0);
+      }
+      if (holdingSort === "symbol") {
+        return String(a.symbol || "").localeCompare(String(b.symbol || ""));
+      }
+      return 0;
+    });
+
+    return list;
+  }, [holdings, holdingSearch, holdingSort]);
 
   return (
     <div className="page">
@@ -199,12 +262,94 @@ export default function Portfolio() {
       </div>
 
       {/* Tab 1: Active Holdings Table */}
+      {/* Interactive Asset Allocation Bar */}
+      {allocation.length > 0 && activeTab === "holdings" && (
+        <div className="card" style={{ padding: "18px 22px", marginBottom: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <strong style={{ fontSize: "13px", fontWeight: 700 }}>Portfolio Asset Allocation</strong>
+            <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              {holdings.length} equities · Hover segment to inspect weight
+            </span>
+          </div>
+
+          <div className="allocation-track">
+            {allocation.map((item, idx) => (
+              <div
+                key={item.id || idx}
+                className="allocation-segment"
+                style={{
+                  width: `${item.weight}%`,
+                  backgroundColor: item.color
+                }}
+                onMouseEnter={() => setHoveredHolding(item)}
+                onMouseLeave={() => setHoveredHolding(null)}
+              />
+            ))}
+          </div>
+
+          {hoveredHolding ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "12px", animation: "toastSlideUp 0.12s ease" }}>
+              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: hoveredHolding.color }} />
+              <strong>{hoveredHolding.symbol}</strong>
+              <span style={{ color: "var(--text-secondary)" }}>{hoveredHolding.companyName}</span>
+              <span style={{ marginLeft: "auto", fontWeight: 700, color: "var(--text-primary)" }}>
+                {formatINR(hoveredHolding.currentValue)} ({hoveredHolding.weight.toFixed(1)}%)
+              </span>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", fontSize: "11px", color: "var(--text-secondary)" }}>
+              {allocation.slice(0, 6).map((item) => (
+                <div key={item.id} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "2px", backgroundColor: item.color }} />
+                  <span>{item.symbol} ({item.weight.toFixed(0)}%)</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab 1: Active Holdings Table */}
       {activeTab === "holdings" && (
         <section className="card table-card">
-          <div className="table-header">
+          <div className="table-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
             <div>
               <strong>Holdings Breakdown</strong>
-              <span> ({holdings.length} stocks currently in portfolio)</span>
+              <span> ({filteredHoldings.length} of {holdings.length} stocks)</span>
+            </div>
+
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input
+                type="text"
+                placeholder="Search my holdings..."
+                value={holdingSearch}
+                onChange={(e) => setHoldingSearch(e.target.value)}
+                style={{
+                  height: "32px",
+                  fontSize: "12px",
+                  padding: "0 10px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "6px",
+                  backgroundColor: "#fff"
+                }}
+              />
+              <select
+                value={holdingSort}
+                onChange={(e) => setHoldingSort(e.target.value)}
+                style={{
+                  height: "32px",
+                  fontSize: "12px",
+                  padding: "0 8px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "6px",
+                  backgroundColor: "#fff"
+                }}
+              >
+                <option value="value">Sort: Value</option>
+                <option value="pnl">Sort: P&amp;L</option>
+                <option value="qty">Sort: Quantity</option>
+                <option value="symbol">Sort: Symbol</option>
+              </select>
             </div>
           </div>
           <div className="table-scroll">
@@ -228,12 +373,12 @@ export default function Portfolio() {
                       Loading holdings data...
                     </td>
                   </tr>
-                ) : holdings.length === 0 ? (
+                ) : filteredHoldings.length === 0 ? (
                   <tr>
                     <td colSpan="8">
                       <div className="empty-box">
-                        <strong>No Active Holdings</strong>
-                        <p>You have not acquired any stock positions yet.</p>
+                        <strong>No Matching Holdings</strong>
+                        <p>{holdingSearch ? `No positions match "${holdingSearch}".` : "You have not acquired any stock positions yet."}</p>
                         <Link to="/stocks" className="primary">
                           Explore Stocks to Buy
                         </Link>
@@ -241,7 +386,7 @@ export default function Portfolio() {
                     </td>
                   </tr>
                 ) : (
-                  holdings.map((h) => {
+                  filteredHoldings.map((h) => {
                     const pnl = Number(h.unrealizedPnL || 0);
                     const isProfit = pnl >= 0;
                     return (

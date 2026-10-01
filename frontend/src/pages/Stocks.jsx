@@ -269,10 +269,10 @@ export default function Stocks() {
             flexWrap: "wrap"
           }}
         >
-          {/* Search Box */}
+          {/* Search Box with Clear Button */}
           <form
             onSubmit={handleSearchSubmit}
-            style={{ flex: 1, minWidth: "280px", maxWidth: "460px", display: "flex", gap: "6px" }}
+            style={{ flex: 1, minWidth: "280px", maxWidth: "460px", display: "flex", gap: "6px", position: "relative" }}
           >
             <input
               type="text"
@@ -280,8 +280,29 @@ export default function Stocks() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Search by company name or symbol (e.g. INFY, Tata Motors)..."
-              style={{ height: "36px", fontSize: "12px", flex: 1 }}
+              style={{ height: "36px", fontSize: "12px", flex: 1, paddingRight: input ? "30px" : "10px" }}
             />
+            {input && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                title="Clear search input"
+                style={{
+                  position: "absolute",
+                  right: "95px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  padding: "4px"
+                }}
+              >
+                ✕
+              </button>
+            )}
             <button type="submit" className="primary" style={{ padding: "0 18px", height: "36px", fontSize: "12px" }}>
               Search
             </button>
@@ -325,10 +346,11 @@ export default function Stocks() {
                 fontSize: "12px",
                 fontWeight: 600,
                 color: showQueryBuilder ? "var(--accent)" : "var(--text-secondary)",
-                borderColor: showQueryBuilder ? "var(--accent)" : "var(--border)"
+                borderColor: showQueryBuilder ? "var(--accent)" : "var(--border)",
+                backgroundColor: showQueryBuilder ? "var(--accent-light)" : "#fff"
               }}
             >
-              {showQueryBuilder ? "✕ Query Formula" : "⚡ Query Formula"}
+              {showQueryBuilder ? "✕ Formula Builder" : "⚡ Formula Builder"}
             </button>
 
             {query && (
@@ -356,20 +378,50 @@ export default function Stocks() {
               borderRadius: "var(--radius-sm)"
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-              <strong style={{ fontSize: "12px", color: "var(--text-primary)" }}>
-                Custom Screener Query (SQL / Boolean Expressions)
-              </strong>
-              <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                e.g. Market Capitalization &gt; 1000 AND Price to Earning &lt; 25
-              </span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
+              <div>
+                <strong style={{ fontSize: "12px", color: "var(--text-primary)" }}>
+                  Custom Screener Query (SQL / Boolean Expressions)
+                </strong>
+                <span style={{ fontSize: "11px", color: "var(--text-muted)", marginLeft: "8px" }}>
+                  Filter equities using custom institutional formulas
+                </span>
+              </div>
+
+              {/* Formula Presets */}
+              <div style={{ display: "flex", gap: "6px" }}>
+                {[
+                  { label: "💎 Debt Free", formula: "Debt to equity < 0.2 AND Return on capital employed > 20" },
+                  { label: "📈 High Growth", formula: "Market Capitalization > 5000 AND Return on equity > 18" },
+                  { label: "🎯 Deep Value", formula: "Price to Earning < 15 AND Return on capital employed > 15" }
+                ].map((f) => (
+                  <button
+                    key={f.label}
+                    type="button"
+                    onClick={() => setCustomQueryText(f.formula)}
+                    style={{
+                      fontSize: "10px",
+                      padding: "3px 8px",
+                      background: "#ffffff",
+                      border: "1px solid var(--border)",
+                      borderRadius: "12px",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      color: "var(--text-secondary)"
+                    }}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
             </div>
+
             <textarea
               className="form-input"
               rows={2}
               value={customQueryText}
               onChange={(e) => setCustomQueryText(e.target.value)}
-              style={{ width: "100%", fontFamily: "monospace", fontSize: "12px", marginBottom: "10px" }}
+              style={{ width: "100%", fontFamily: "monospace", fontSize: "12px", marginBottom: "10px", boxSizing: "border-box" }}
             />
             <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
               <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Insert Variable:</span>
@@ -385,7 +437,8 @@ export default function Stocks() {
                     border: "1px solid var(--border)",
                     borderRadius: "4px",
                     cursor: "pointer",
-                    color: "var(--accent)"
+                    color: "var(--accent)",
+                    fontWeight: 600
                   }}
                 >
                   + {tag}

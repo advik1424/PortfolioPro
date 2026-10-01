@@ -1005,3 +1005,248 @@ a {
     padding: 20px 16px 84px;
   }
 }
+
+/* ======================================================== */
+/* MODERN INTERACTIVE & AESTHETIC ENHANCEMENTS              */
+/* ======================================================== */
+
+/* Custom Clean Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Pulsing Live Market Dot */
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 208, 156, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 7px rgba(0, 208, 156, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 208, 156, 0);
+  }
+}
+
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-green 2s infinite;
+  vertical-align: middle;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #e6fbf5;
+  color: #008765;
+  border: 1px solid #a7f3d0;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Smooth Interactive Micro-Interactions */
+button, a.button, .primary, .secondary {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+button:active, a.button:active, .primary:active, .secondary:active {
+  transform: scale(0.97) !important;
+}
+
+.card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease !important;
+}
+
+.card:hover {
+  box-shadow: 0 6px 18px -3px rgba(15, 23, 42, 0.07);
+}
+
+/* Interactive Table Hover with Groww Green Accent Edge */
+.market-table tbody tr {
+  transition: all 0.16s ease;
+}
+
+.market-table tbody tr:hover td {
+  background-color: #f7fdfb !important;
+}
+
+.market-table tbody tr:hover td:first-child {
+  border-left: 3px solid var(--accent);
+}
+
+/* Quick Action Inline Buttons on Table Hover */
+.table-quick-action {
+  opacity: 0.65;
+  transition: all 0.15s ease;
+}
+
+.market-table tbody tr:hover .table-quick-action {
+  opacity: 1;
+}
+
+/* Interactive Asset Allocation Bar */
+.allocation-track {
+  height: 10px;
+  border-radius: 999px;
+  display: flex;
+  overflow: hidden;
+  background: #f1f5f9;
+  gap: 2px;
+  margin: 14px 0 16px;
+  padding: 2px;
+}
+
+.allocation-segment {
+  height: 100%;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.allocation-segment:hover {
+  opacity: 0.85;
+  transform: scaleY(1.3);
+  filter: brightness(1.08);
+}
+
+/* Interactive Chart Elements */
+.chart-container-rel {
+  position: relative;
+  user-select: none;
+}
+
+.chart-scrubber-line {
+  stroke: #94a3b8;
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+.chart-scrubber-dot {
+  fill: #00d09c;
+  stroke: #ffffff;
+  stroke-width: 3.5;
+  filter: drop-shadow(0 2px 6px rgba(0, 208, 156, 0.45));
+  pointer-events: none;
+  transition: r 0.15s ease;
+}
+
+.chart-tooltip-floating {
+  position: absolute;
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+  transform: translate(-50%, -115%);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.35);
+  white-space: nowrap;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chart-tooltip-floating::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #0f172a transparent transparent transparent;
+}
+
+/* Interactive Ratio Strip Cards with Tooltips */
+.ratio-cell-interactive {
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  position: relative;
+  cursor: default;
+}
+
+.ratio-cell-interactive:hover {
+  background-color: #f8fafc;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+}
+
+/* Toast Notification */
+.toast-floating {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 14px 28px -4px rgba(15, 23, 42, 0.28);
+  z-index: 9999;
+  animation: toastSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Spinning Refresh Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Glassmorphism Navigation */
+.top-nav {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+}
+
